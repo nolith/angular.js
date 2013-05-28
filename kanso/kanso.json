@@ -1,0 +1,18 @@
+{
+  "name": "angular",
+  "version": "1.0.7-kanso.1",
+  "categories": ["frameworks", "frontend"],
+  "maintainers": [
+    {
+      "name": "Alessio Caiazza",
+      "url": "http://abisso.org"
+    }
+  ],
+  "url": "http://angularjs.org/",
+  "modules": "angular.js",
+  "modules_attachment": false,
+  "dependencies": {
+    "modules": ">=0.0.8"
+  },
+  "description": "HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting environment is extraordinarily expressive, readable, and quick to develop."
+}
