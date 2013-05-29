@@ -168,4 +168,7 @@ module.exports = function(grunt) {
   grunt.registerTask('webserver', ['connect:devserver']);
   grunt.registerTask('package', ['clean', 'buildall', 'minall', 'docs', 'copy', 'write', 'compress']);
   grunt.registerTask('default', ['package']);
+  
+  //kanso tasks
+  require('./kanso/grunt.js')(grunt);
 };
