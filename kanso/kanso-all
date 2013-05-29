@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for i in `ls | grep angular | grep -v tar.gz` ; do
+  kanso $@ $i
+done
