@@ -11,7 +11,9 @@ if (typeof String.prototype.endsWith !== 'function') {
 
 module.exports = function(grunt) {
   var kanso_config = grunt.file.readJSON(path.join('kanso', 'config.json'));
-  console.log(kanso_config);
+  var kansoTemplate = grunt.file.read('kanso/kanso.json');
+  var kansoReadme = grunt.file.read('kanso/README.md');
+
 
   function TemplateData(file, deps) {
     return {
@@ -24,9 +26,13 @@ module.exports = function(grunt) {
     };
   }
 
+  function TemplateAndWrite(template, data, file) {
+    var processed = grunt.template.process(template, {data: data});
+    grunt.file.write(file, processed);
+  }
+
   grunt.registerTask('kanso:prepare', 'prepare all the kanso packages', function() {
     var files = fs.readdirSync('build');
-    var kansoTemplate = grunt.file.read('kanso/kanso.json');
     for(var i=0; i < files.length; i++) {
       var file = path.join('build',files[i]);
       if(!file.endsWith(".js")) continue;
@@ -50,8 +56,10 @@ module.exports = function(grunt) {
         data = TemplateData(js_file, 
           ",\n    \"angular\":\"=<%= kanso_version %>\"");
       
-      var kanso_json = grunt.template.process(kansoTemplate, {data: data});
-      grunt.file.write(path.join(kansoFolder, 'kanso.json'), kanso_json);
+      TemplateAndWrite(kansoTemplate, data,
+        path.join(kansoFolder, 'kanso.json'));
+      TemplateAndWrite(kansoReadme, data,
+        path.join(kansoFolder, 'README.md'));
 
       grunt.log.ok("Library " + js_file);
     }
