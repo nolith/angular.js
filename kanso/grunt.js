@@ -31,7 +31,7 @@ module.exports = function(grunt) {
   }
 
   grunt.registerTask('kanso:prepare', 'prepare all the kanso packages', function() {
-    var files = grunt.file.expand("build/angular-*.js");
+    var files = grunt.file.expand("build/angular*.js");
     for(var i=0; i < files.length; i++) {
       var file = files[i];
       var lib = path.basename(file, ".js");
