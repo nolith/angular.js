@@ -1,4 +1,3 @@
-var fs = require("fs");
 var path = require("path");
 
 var kanso_ver = "kanso.1";
@@ -32,11 +31,9 @@ module.exports = function(grunt) {
   }
 
   grunt.registerTask('kanso:prepare', 'prepare all the kanso packages', function() {
-    var files = fs.readdirSync('build');
+    var files = grunt.file.expand("build/angular-*.js");
     for(var i=0; i < files.length; i++) {
-      var file = path.join('build',files[i]);
-      if(!file.endsWith(".js")) continue;
-
+      var file = files[i];
       var lib = path.basename(file, ".js");
       var kansoFolder = path.join("kanso",lib);
       var js_file = path.basename(file);
@@ -54,7 +51,7 @@ module.exports = function(grunt) {
           ",\n    \"angular-cookies\":\"=<%= kanso_version %>\"");
       else
         data = TemplateData(js_file, 
-          ",\n    \"angular\":\"=<%= kanso_version %>\"");
+          ",\n    \"angular\":\"<%= kanso_version %>\"");
       
       TemplateAndWrite(kansoTemplate, data,
         path.join(kansoFolder, 'kanso.json'));
@@ -66,10 +63,10 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('kanso:clean', 'clean all the kanso packages', function() {
-    var files = fs.readdirSync('kanso');
-    for(var i=0; i < files.length; i++) {
-      var file = path.join('kanso',files[i]);
-      if(grunt.file.isDir(file)) {
+    var kanso_data = grunt.file.expand("kanso/angular*");
+    for(var i in kanso_data) {
+      var file = kanso_data[i];
+      if(grunt.file.isDir(file) || file.endsWith(".tar.gz")) {
         grunt.file.delete(file);
         grunt.log.ok("Deleted " +file + " ")
       }
